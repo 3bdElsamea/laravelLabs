@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -10,18 +11,17 @@ class PostController extends Controller
     public function index()
     {
         // $posts = Post::all();
-        // Use Pagination
         $posts = Post::paginate(5);
         return view('posts.index', ['posts' => $posts]);
     }
 
     public function show($id)
     {
-        $post = Post::find($id);
-        return view('posts.show', ['post' => $post]);
+        $post = Post::with('comments')->find($id);
+        $user = User::find($post->user_id);
+        return view('posts.show', ['post' => $post, 'user' => $user]);
     }
 
-    //Show Create Post Form
     public function create()
     {
         // find all users
@@ -72,4 +72,28 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
+    // Comments
+    public function addComment(Request $request, $id)
+    {
+        $post = Post::find($id);
+        $comment = new Comment([
+            'body' => $request->body,
+        ]);
+        $post->comments()->save($comment);
+        return redirect()->route('posts.show', $post->id);
+    }
+
+    public function updateComment(Request $request, $id)
+    {
+        $comment = Comment::find($id);
+        $comment?->update($request->all());
+        return redirect()->back();
+    }
+
+    public function deleteComment(int $id)
+    {
+        $comment = Comment::find($id);
+        $comment?->delete();
+        return redirect()->back();
+    }
 }
