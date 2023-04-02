@@ -9,21 +9,19 @@
         @csrf
         <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control">
+            <input type="text" name="title" class="form-control">
         </div>
         <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" rows="3"></textarea>
+            <label class="form-label">Content</label>
+            <textarea class="form-control" name="content" rows="3"></textarea>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Post Creator</label>
-            <select class="form-control">
-                <option value="1">Ahmed</option>
-                <option value="2">Mohamed</option>
-                <option value="3">Ali</option>
-                <option value="4">Elsayed</option>
-
+            <select class="form-control" name="user_id">
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endforeach
             </select>
         </div>
 
