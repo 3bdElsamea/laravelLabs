@@ -45,6 +45,12 @@
             @endforeach
         </tbody>
     </table>
+    <div class="text-center">
+        <a href="{{ route('posts.restore') }}" class="btn btn-secondary" onclick="return confirm('Are you sure?')">Restore
+            All
+            Deleted Posts</a>
+    </div>
+
     {{ $posts->links() }}
     <script>
         function confirmDelete() {

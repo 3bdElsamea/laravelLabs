@@ -96,4 +96,11 @@ class PostController extends Controller
         $comment?->delete();
         return redirect()->back();
     }
+
+    // Restore
+    public function restore()
+    {
+        Post::withTrashed()->restore();
+        return redirect()->back();
+    }
 }
