@@ -5,12 +5,14 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+
 
 class PostController extends Controller
 {
     public function index()
     {
-        // $posts = Post::all();
         $posts = Post::paginate(5);
         return view('posts.index', ['posts' => $posts]);
     }
@@ -30,8 +32,10 @@ class PostController extends Controller
     }
 
     // store
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
+        // Validate Data
+
         // Save Data
         Post::create([
             'title' => $request->title,
@@ -52,7 +56,7 @@ class PostController extends Controller
     }
 
     //Update Post
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
         $post = Post::find($id);
         $post?->update($request->all()); // if $post is not null, then update it

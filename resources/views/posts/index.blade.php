@@ -29,8 +29,9 @@
                     @else
                         <td>Not Found</td>
                     @endif
+                    <td>{{ $post->readable_date }}</td>
                     {{-- <td>{{ $post->created_at->format('d-m-y') }}</td> --}}
-                    <td>{{ $post->created_at->isoFormat('Do-MMMM-YYYY, h:mm:ss A') }}</td>
+                    {{-- <td>{{ $post->created_at->isoFormat('Do-MMMM-YYYY, h:mm:ss A') }}</td> --}}
                     <td>
                         <a href="{{ route('posts.show', ['id' => $post->id]) }}" class="btn btn-info">View</a>
                         <a href="{{ route('posts.edit', ['id' => $post['id']]) }}" class="btn btn-primary">Edit</a>

@@ -34,4 +34,12 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    // Human readable Date function
+    public function getReadableDateAttribute()
+    {
+        return date('Y-m-d H:i:s', strtotime($this->created_at));
+        // return $this->created_at->isoFormat('Do-MMMM-YYYY, h:mm:ss A');
+        // return $this->created_at->diffForHumans();
+    }
 }
