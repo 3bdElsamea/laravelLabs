@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Sluggable;
     protected $fillable = [
         'title',
         'content',
@@ -41,5 +42,15 @@ class Post extends Model
         return date('Y-m-d H:i:s', strtotime($this->created_at));
         // return $this->created_at->isoFormat('Do-MMMM-YYYY, h:mm:ss A');
         // return $this->created_at->diffForHumans();
+    }
+
+    // Slug
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title',
+            ],
+        ];
     }
 }

@@ -19,9 +19,11 @@ class PostController extends Controller
 
     public function show($id)
     {
+
         $post = Post::with('comments')->find($id);
-        $user = User::find($post->user_id);
-        return view('posts.show', ['post' => $post, 'user' => $user]);
+        // $user = User::find($post->user_id);
+        // return view('posts.show', ['post' => $post, 'user' => $user]);
+        return view('posts.show', ['post' => $post->slug]);
     }
 
     public function create()
@@ -90,10 +92,16 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post->id);
     }
 
+    // Edit comment that passes the comment to the moda
+
+
     public function updateComment(Request $request, $id)
     {
         $comment = Comment::find($id);
         $comment?->update($request->all());
+        // $comment?->update([
+        //     'body' => $request->body,
+        // ]);
         return redirect()->back();
     }
 

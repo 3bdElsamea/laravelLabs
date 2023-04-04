@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <h1 class="text-center text-success"> Add Post</h1>
+    <h1 class="text-center text-success"> Add New Post</h1>
     <hr>
 
     <form action="{{ route('posts.store') }}" method="POST">
@@ -58,7 +58,8 @@
                 </div>
             @endif
         </div>
-
-        <button class="btn btn-success">Submit</button>
+        <div class="text-center">
+            <button class="btn btn-success fs-3">Add</button>
+        </div>
     </form>
 @endsection

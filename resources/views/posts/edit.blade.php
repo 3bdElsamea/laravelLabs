@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+    <h1 class="text-center text-success"> Update Post</h1>
+    <hr>
     <form action="{{ route('posts.update', ['id' => $post->id]) }}" method="POST">
         @csrf
         @method('PUT')
@@ -47,6 +49,8 @@
             @endif
         </div>
 
-        <button class="btn btn-success">Update</button>
+        <div class="text-center">
+            <button class="btn btn-success fs-3">Update</button>
+        </div>
     </form>
 @endsection
