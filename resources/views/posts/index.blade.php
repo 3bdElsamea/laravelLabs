@@ -13,6 +13,8 @@
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Title</th>
+                {{-- Slug --}}
+                <th scope="col">Slug</th>
                 <th scope="col">Posted By</th>
                 <th scope="col">Created At</th>
                 <th scope="col">Actions</th>
@@ -24,6 +26,7 @@
                 <tr>
                     <td>{{ $post->id }}</td>
                     <td>{{ $post->title }}</td>
+                    <td>{{ $post->slug }}</td>
                     @if ($post->user)
                         <td>{{ $post->user->name }}</td>
                     @else

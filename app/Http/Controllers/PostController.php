@@ -23,7 +23,7 @@ class PostController extends Controller
         $post = Post::with('comments')->find($id);
         // $user = User::find($post->user_id);
         // return view('posts.show', ['post' => $post, 'user' => $user]);
-        return view('posts.show', ['post' => $post->slug]);
+        return view('posts.show', ['post' => $post]);
     }
 
     public function create()
