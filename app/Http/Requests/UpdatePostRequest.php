@@ -36,6 +36,7 @@ class UpdatePostRequest extends FormRequest
             'title.required' => 'Title is required',
             'title.min' => 'Title must be at least 3 characters',
             'title.max' => 'Title must be less than 250 characters',
+            'title.unique' => 'Title already exists',
             'content.required' => 'Content is required',
             'content.min' => 'Content must be at least 10 characters',
             'content.max' => 'Content must be less than 250 characters',

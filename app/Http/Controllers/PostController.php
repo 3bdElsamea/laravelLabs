@@ -60,6 +60,9 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $post?->update($request->all()); // if $post is not null, then update it
+        // search difference between all() and only()
+
+        // Other Method
         // $post->update([
         //     'title' => $request->title,
         //     'content' => $request->content,

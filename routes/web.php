@@ -29,3 +29,7 @@ Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update
 Route::put('/posts/{id}/comments', [PostController::class, 'updateComment'])->name('posts.updateComment');
 Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::delete('/posts/{id}/comments', [PostController::class, 'deleteComment'])->name('posts.deleteComment'); //?? parameter
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
