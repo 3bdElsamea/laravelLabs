@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\MaxPostsPerUser;
 
 class StorePostRequest extends FormRequest
 {
@@ -25,7 +26,8 @@ class StorePostRequest extends FormRequest
             // Validate store
             'title' => 'required|min:3|unique:posts,title|max:250',
             'content' => 'required|min:10|max:250',
-            'user_id' => 'required|exists:users,id',
+            // validat user using max post validation
+            'user_id' => ['required', 'exists:users,id', new MaxPostsPerUser],
         ];
     }
 
