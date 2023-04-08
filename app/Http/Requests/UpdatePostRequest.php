@@ -23,7 +23,7 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             // Validate update
-            'title' => 'required|min:3|unique:posts|max:250',
+            'title' => 'required|min:3||max:250|unique:posts,title,' . $this->id,
             'content' => 'required|min:10|max:250',
             'user_id' => 'required|exists:users,id',
         ];

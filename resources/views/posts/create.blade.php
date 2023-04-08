@@ -8,7 +8,7 @@
     <h1 class="text-center text-success"> Add New Post</h1>
     <hr>
 
-    <form action="{{ route('posts.store') }}" method="POST">
+    <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label class="form-label">Title</label>
@@ -58,6 +58,20 @@
                 </div>
             @endif
         </div>
+        <div class="mb-3">
+            <label class="form-label">Image</label>
+            <input class="form-control" name="image" type="file" id="formFile">
+            @if ($errors->has('image'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('image') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+
         <div class="text-center">
             <button class="btn btn-success fs-3">Add</button>
         </div>

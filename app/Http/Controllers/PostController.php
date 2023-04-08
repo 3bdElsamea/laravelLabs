@@ -36,16 +36,20 @@ class PostController extends Controller
     // store
     public function store(StorePostRequest $request)
     {
-        // Validate Data
-
         // Save Data
-        Post::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'user_id' => $request->user_id,
-        ]);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '-' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+            Post::create($request->except('image') + ['image' => $imageName]);
+        } else {
+            Post::create([
+                'title' => $request->title,
+                'content' => $request->content,
+                'user_id' => $request->user_id,
+            ]);
+        }
 
-        // redirect
         return redirect()->route('posts.index');
     }
 
@@ -60,16 +64,22 @@ class PostController extends Controller
     //Update Post
     public function update(UpdatePostRequest $request, $id)
     {
-        $post = Post::find($id);
-        $post?->update($request->all()); // if $post is not null, then update it
-        // search difference between all() and only()
-
-        // Other Method
-        // $post->update([
-        //     'title' => $request->title,
-        //     'content' => $request->content,
-        //     'user_id' => $request->user_id,
-        // ]);
+        $post = Post::where('id', $id)->first();
+        if (!$post) {
+            return redirect()->route('post.index');
+        }
+        if ($request->hasFile('image')) {
+            $oldImage = public_path('images') . '/' . $post->image;
+            if (file_exists($oldImage)) {
+                @unlink($oldImage);
+            }
+            $image = $request->file('image');
+            $imageName = time() . '-' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+            $post->update($request->except('image') + ['image' => $imageName]);
+        } else {
+            $post->update($request->all());
+        }
         return redirect()->route('posts.index');
     }
 
@@ -77,7 +87,7 @@ class PostController extends Controller
     public function destroy(int $id)
     {
         $post = Post::find($id);
-        $post?->delete(); // if $post is not null, then delete it
+        $post?->delete();
         return redirect()->route('posts.index');
     }
 
@@ -92,16 +102,11 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post->id);
     }
 
-    // Edit comment that passes the comment to the moda
-
 
     public function updateComment(Request $request, $id)
     {
         $comment = Comment::find($id);
         $comment?->update($request->all());
-        // $comment?->update([
-        //     'body' => $request->body,
-        // ]);
         return redirect()->back();
     }
 

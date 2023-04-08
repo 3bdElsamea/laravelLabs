@@ -28,6 +28,7 @@ class StorePostRequest extends FormRequest
             'content' => 'required|min:10|max:250',
             // validat user using max post validation
             'user_id' => ['required', 'exists:users,id', new MaxPostsPerUser],
+            'image' => 'mimes:png,jpg|max:4048',
         ];
     }
 
@@ -44,6 +45,8 @@ class StorePostRequest extends FormRequest
             'content.max' => 'Content must be less than 250 characters',
             'user_id.required' => 'User is required',
             'user_id.exists' => 'User does not exist',
+            'image.mimes' => 'Image must be a file of type: png, jpg',
+            'image.max' => 'Image must be less than 4MB',
         ];
     }
 }

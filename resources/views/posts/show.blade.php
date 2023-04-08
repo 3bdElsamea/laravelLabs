@@ -16,7 +16,17 @@
             <p class="card-text">Posted by: {{ $post->user->name }}</p>
         </div>
     </div>
-
+    {{-- If image display it --}}
+    @if ($post->image)
+        <div class="card mt-4 text-center">
+            <div class="card-header">
+                <h1>Post Image</h1>
+            </div>
+            <div class="card-body">
+                <img src="{{ asset('images/' . $post->image) }}" alt="Post Image" class="img-fluid">
+            </div>
+        </div>
+    @endif
     <div class="card mt-4 text-center">
         <div class="card-header">
             <h1>Comments</h1>

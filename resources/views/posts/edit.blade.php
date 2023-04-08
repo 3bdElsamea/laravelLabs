@@ -7,7 +7,7 @@
 @section('content')
     <h1 class="text-center text-success"> Update Post</h1>
     <hr>
-    <form action="{{ route('posts.update', ['id' => $post->id]) }}" method="POST">
+    <form action="{{ route('posts.update', ['id' => $post->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -45,6 +45,20 @@
             @if ($errors->has('user_id'))
                 <div class="text-danger">
                     {{ $errors->first('user_id') }}
+                </div>
+            @endif
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Image</label>
+            <input class="form-control" name="image" type="file" id="formFile">
+            @if ($errors->has('image'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('image') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
         </div>
