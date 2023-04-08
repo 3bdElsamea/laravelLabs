@@ -87,6 +87,13 @@ class PostController extends Controller
     public function destroy(int $id)
     {
         $post = Post::find($id);
+        // if ($post->image) {
+        //     $oldImage = public_path('images') . '/' . $post->image;
+        //     if (file_exists($oldImage)) {
+        //         @unlink($oldImage);
+        //     }
+        // }
+        $post?->comments()->delete();
         $post?->delete();
         return redirect()->route('posts.index');
     }
@@ -117,7 +124,6 @@ class PostController extends Controller
         return redirect()->back();
     }
 
-    // Restore
     public function restore()
     {
         Post::withTrashed()->restore();

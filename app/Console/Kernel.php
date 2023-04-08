@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
         // Test
         // $schedule->job(new PruneOldPostsJob())->everyMinute();
 
-        // Schedule PruneOlsPostsJob to run every midnight
         $schedule->job(new PruneOldPostsJob())->dailyAt('00:00');
 
     }
