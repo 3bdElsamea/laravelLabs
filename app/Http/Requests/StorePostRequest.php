@@ -26,7 +26,6 @@ class StorePostRequest extends FormRequest
             // Validate store
             'title' => 'required|min:3|unique:posts,title|max:250',
             'content' => 'required|min:10|max:250',
-            // validat user using max post validation
             'user_id' => ['required', 'exists:users,id', new MaxPostsPerUser],
             'image' => 'mimes:png,jpg|max:4048',
         ];

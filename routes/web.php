@@ -1,7 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +23,8 @@ Route::get('/', function () {
 });
 // aUTH Group
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index')->middleware('auth');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
@@ -34,6 +40,63 @@ Route::group(['middleware' => ['auth']], function () {
 
 Auth::routes();
 
-// Home Routes
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+});
+
+Route::get('/auth/callback', function () {
+    if(request()->has('error')) {
+        return redirect()->to('/');
+    }
+    $githubUser = Socialite::driver('github')->user();
+    $user = User::where('email', $githubUser->getEmail())->first();
+
+    if(!$user) {
+        $user = User::create([
+            'name' => $githubUser->getName(),
+            'email' => $githubUser->getEmail(),
+            'password' => bcrypt("12345678"),
+            'provider_id' => $githubUser->getId(),
+            'provider_name' => 'github',
+        ]);
+    }else if($user->provider_id == null){
+            $user->update([
+                'provider_id' => $githubUser->getId(),
+                'provider_name' => 'github',
+            ]);
+    }
+
+    Auth::login($user, true);
+
+    return redirect()->to('/');
+
+});
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+
+});
+
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->stateless()->user();
+    $user = User::where('email', $googleUser->getEmail())->first();
+
+    if(!$user) {
+        $user = User::create([
+            'name' => $googleUser->getName(),
+            'email' => $googleUser->getEmail(),
+            'password' => bcrypt("12345678"),
+            'provider_id' => $googleUser->getId(),
+            'provider_name' => 'google',
+        ]);
+    }else if($user->provider_id == null){
+            $user->update([
+                'provider_id' => $googleUser->getId(),
+                'provider_name' => 'google',
+            ]);
+    }
+
+    Auth::login($user);
+
+    return redirect('/posts');
+});
